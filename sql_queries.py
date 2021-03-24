@@ -17,8 +17,8 @@ transfer_outs_table_drop = "DROP TABLE IF EXISTS transfer_outs_table;"
 # CREATE TABLES
 
 accounts_table_create = ("""CREATE TABLE IF NOT EXISTS accounts_table 
-                            (   account_id             uuid PRIMARY KEY,
-                                customer_id            uuid,
+                            (   account_id             bigint PRIMARY KEY,
+                                customer_id            bigint,
                                 created_at             timestamp,
                                 status                 varchar(128),
                                 account_branch         varchar(128),
@@ -29,16 +29,15 @@ accounts_table_create = ("""CREATE TABLE IF NOT EXISTS accounts_table
 
 city_table_create = ("""CREATE TABLE IF NOT EXISTS city_table
                         (
-                            city_id     int PRIMARY KEY,
                             city        varchar(256),
-                            state_id    uuid
-                            
+                            state_id    bigint,
+                            city_id     bigint PRIMARY KEY                
                         );"""
                     )
 
 costumers_table_create = ("""CREATE TABLE IF NOT EXISTS costumers_table
                         (
-                        customer_id      uuid PRIMARY KEY,
+                        customer_id      bigint PRIMARY KEY,
                         first_name       varchar(128),
                         last_name        varchar(128),
                         customer_city    int,
@@ -49,7 +48,7 @@ costumers_table_create = ("""CREATE TABLE IF NOT EXISTS costumers_table
 
 country_table_create = ("""CREATE TABLE IF NOT EXISTS country_table
                           (
-                            country_id      uuid PRIMARY KEY,
+                            country_id      bigint PRIMARY KEY,
                             country         varchar(128)
                           );"""
                       )
@@ -95,8 +94,8 @@ d_year_table_create = ("""CREATE TABLE IF NOT EXISTS d_year_table
 
 pix_movements_table_create = ("""CREATE TABLE IF NOT EXISTS pix_movements_table
                         (
-                            id                  uuid PRIMARY KEY,
-                            account_id          uuid,
+                            id                  bigint PRIMARY KEY,
+                            account_id          bigint,
                             in_or_out           varchar(128),
                             pix_amount          float,
                             pix_requested_at    int,
@@ -107,16 +106,16 @@ pix_movements_table_create = ("""CREATE TABLE IF NOT EXISTS pix_movements_table
 
 state_table_create = ("""CREATE TABLE IF NOT EXISTS state_table
                         (
-                            state_id            uuid PRIMARY KEY,
+                            state_id            bigint PRIMARY KEY,
                             state               varchar(128),
-                            country_id          uuid
+                            country_id          bigint
                         );"""
                     )
 
 transfer_ins_table_create = ("""CREATE TABLE IF NOT EXISTS transfer_ins_table
                         (
-                            id                          uuid PRIMARY KEY,
-                            account_id                  uuid,
+                            id                          bigint PRIMARY KEY,
+                            account_id                  bigint,
                             amount                      float,
                             transaction_requested_at    int,
                             transaction_completed_at    int,
@@ -126,8 +125,8 @@ transfer_ins_table_create = ("""CREATE TABLE IF NOT EXISTS transfer_ins_table
 
 transfer_outs_table_create = ("""CREATE TABLE IF NOT EXISTS transfer_outs_table
                         (
-                            id                          uuid PRIMARY KEY,
-                            account_id                  uuid,
+                            id                          bigint PRIMARY KEY,
+                            account_id                  bigint,
                             amount                      float,
                             transaction_requested_at    int,
                             transaction_completed_at    int,
@@ -137,30 +136,27 @@ transfer_outs_table_create = ("""CREATE TABLE IF NOT EXISTS transfer_outs_table
 
 # INSERT RECORDS
 
-songplay_table_insert = ("""INSERT INTO songplay_table
+accounts_table_insert = ("""INSERT INTO accounts_table
                             (
-                            start_time,
-                            user_id,
-                            level,
-                            song_id,
-                            artist_id,
-                            session_id,
-                            location,
-                            user_agent
+                            account_id,
+                            customer_id,            
+                            created_at,            
+                            status,              
+                            account_branch,         
+                            account_check_digit,    
+                            account_number         
                             ) 
-                            VALUES (%s, %s, %s, %s, %s, %s, %s, %s);"""
+                            VALUES (%s, %s, %s, %s, %s, %s, %s);"""
                         )
 
-user_table_insert = ("""INSERT INTO user_table
+city_table_insert = ("""INSERT INTO city_table
                         (
-                        user_id,
-                        first_name,
-                        last_name,
-                        gender,
-                        level
+                            city_id,
+                            city,
+                            state_id
+                            
                         ) 
-                        VALUES (%s, %s, %s, %s, %s)
-                        ON CONFLICT (user_id) DO UPDATE SET level=EXCLUDED.level;"""
+                        VALUES (%s, %s, %s);"""
                     )
 
 song_table_insert = ("""INSERT INTO song_table
@@ -216,4 +212,5 @@ song_select = ("""SELECT
 
 create_table_queries = [accounts_table_create, city_table_create, costumers_table_create,country_table_create, d_month_table_create, d_time_table_create, 
 d_week_table_create, d_year_table_create, pix_movements_table_create, state_table_create, transfer_ins_table_create, transfer_outs_table_create] #, user_table_create, song_table_create, artist_table_create, time_table_create]
-drop_table_queries = [accounts_table_drop] #, user_table_drop, song_table_drop, artist_table_drop, time_table_drop]
+drop_table_queries = [accounts_table_drop, city_table_drop , costumers_table_drop, country_table_drop, d_month_table_drop, d_time_table_drop,
+d_week_table_drop, d_weekday_table_drop, d_year_table_drop, pix_movements_table_drop, state_table_drop, transfer_ins_table_drop, transfer_outs_table_drop] #, user_table_drop, song_table_drop, artist_table_drop, time_table_drop]
