@@ -40,8 +40,8 @@ costumers_table_create = ("""CREATE TABLE IF NOT EXISTS costumers_table
                         customer_id      bigint PRIMARY KEY,
                         first_name       varchar(128),
                         last_name        varchar(128),
-                        customer_city    int,
-                        cpf              int,
+                        customer_city    bigint,
+                        cpf              bigint,
                         country_name     varchar(128)
                         );"""
                     )
@@ -62,7 +62,7 @@ d_month_table_create = ("""CREATE TABLE IF NOT EXISTS d_month_table
 
 d_time_table_create = ("""CREATE TABLE IF NOT EXISTS d_time_table
                         (
-                            time_id             int PRIMARY KEY,
+                            time_id             bigint PRIMARY KEY,
                             action_timestamp    timestamp,
                             week_id             int,
                             month_id            int,
@@ -98,8 +98,8 @@ pix_movements_table_create = ("""CREATE TABLE IF NOT EXISTS pix_movements_table
                             account_id          bigint,
                             in_or_out           varchar(128),
                             pix_amount          float,
-                            pix_requested_at    int,
-                            pix_completed_at    int,
+                            pix_requested_at    varchar(256),
+                            pix_completed_at    varchar(256),
                             status              varchar(128)
                         );"""
                     )
@@ -117,8 +117,8 @@ transfer_ins_table_create = ("""CREATE TABLE IF NOT EXISTS transfer_ins_table
                             id                          bigint PRIMARY KEY,
                             account_id                  bigint,
                             amount                      float,
-                            transaction_requested_at    int,
-                            transaction_completed_at    int,
+                            transaction_requested_at    varchar(256),
+                            transaction_completed_at    varchar(256),
                             status                      varchar(128)
                         );"""
                     )
@@ -128,8 +128,8 @@ transfer_outs_table_create = ("""CREATE TABLE IF NOT EXISTS transfer_outs_table
                             id                          bigint PRIMARY KEY,
                             account_id                  bigint,
                             amount                      float,
-                            transaction_requested_at    int,
-                            transaction_completed_at    int,
+                            transaction_requested_at    varchar(256),
+                            transaction_completed_at    varchar(256),
                             status                      varchar(128)
                         );"""
                     )
@@ -159,44 +159,122 @@ city_table_insert = ("""INSERT INTO city_table
                         VALUES (%s, %s, %s);"""
                     )
 
-song_table_insert = ("""INSERT INTO song_table
+costumers_table_insert = ("""INSERT INTO costumers_table
                         (
-                        song_id,
-                        title,
-                        artist_id,
-                        year,
-                        duration
+                        customer_id,
+                        first_name,
+                        last_name,
+                        customer_city,
+                        cpf,
+                        country_name
                         )
-                        VALUES (%s, %s, %s, %s, %s)
-                        ON CONFLICT (song_id) DO NOTHING;"""
+                        VALUES (%s, %s, %s, %s, %s, %s)
+                        ON CONFLICT (customer_id) DO NOTHING;"""
                     )
 
-artist_table_insert = ("""INSERT INTO artist_table
+country_table_insert = ("""INSERT INTO country_table
                           (
-                          artist_id,
-                          name,
-                          location,
-                          latitude,
-                          longitude
+                            country_id,
+                            country
                           )
-                          VALUES (%s, %s, %s, %s, %s)
-                          ON CONFLICT (artist_id) DO NOTHING;"""
+                          VALUES (%s, %s)
+                          ON CONFLICT (country_id) DO NOTHING;"""
                       )
 
 
-time_table_insert = ("""INSERT INTO time_table
+d_month_table_insert = ("""INSERT INTO d_month_table
                         (
-                        start_time,
-                        hour,
-                        day,
-                        week,
-                        month,
-                        year,
-                        weekday
+                        month_id,
+                        action_month
                         )
-                        VALUES (%s, %s, %s, %s, %s, %s, %s)
-                        ON CONFLICT (start_time) DO NOTHING;"""
+                        VALUES (%s, %s)
+                        ON CONFLICT (month_id) DO NOTHING;"""
                     )
+
+d_time_table_insert = ("""INSERT INTO d_time_table
+                        (
+                            time_id,
+                            action_timestamp,
+                            week_id,
+                            month_id,
+                            year_id,
+                            weekday_id
+                        )
+                        VALUES (%s, %s, %s, %s, %s, %s);"""
+                    )
+
+d_week_table_insert = ("""INSERT INTO d_week_table
+                        (
+                            weekday_id,
+                            action_week
+                        )
+                        VALUES (%s, %s);"""
+                    )
+
+d_weekday_table_insert = ("""INSERT INTO d_weekday_table
+                        (
+                            weekday_id,
+                            action_weekday
+                        )
+                        VALUES (%s, %s);"""
+                    )
+
+d_year_table_insert = ("""INSERT INTO d_year_table
+                        (
+                            year_id,
+                            action_year
+                        )
+                        VALUES (%s, %s);"""
+                    )
+
+pix_movements_table_insert = ("""INSERT INTO pix_movements_table
+                        (
+                            id,
+                            account_id,
+                            in_or_out,
+                            pix_amount,
+                            pix_requested_at,
+                            pix_completed_at,
+                            status
+                        )
+                        VALUES (%s, %s, %s, %s, %s, %s, %s);"""
+                    )
+
+transfer_ins_table_insert = ("""INSERT INTO transfer_ins_table
+                        (
+                            id,
+                            account_id,
+                            amount,
+                            transaction_requested_at,
+                            transaction_completed_at,
+                            status
+                        )
+                        VALUES (%s, %s,%s, %s,%s, %s);"""
+                    )
+
+transfer_outs_table_insert = ("""INSERT INTO transfer_outs_table
+                        (
+                            id,
+                            account_id,
+                            amount,
+                            transaction_requested_at,
+                            transaction_completed_at,
+                            status
+                        )
+                        VALUES (%s, %s, %s, %s,%s, %s);"""
+                    )
+
+state_table_insert = ("""INSERT INTO state_table
+                        (
+                            state_id,
+                            state,
+                            country_id
+                        )
+                        VALUES (%s, %s, %s);"""
+                    )
+
+                     
+                    
 
 # FIND SONGS
 
@@ -211,6 +289,6 @@ song_select = ("""SELECT
 # QUERY LISTS
 
 create_table_queries = [accounts_table_create, city_table_create, costumers_table_create,country_table_create, d_month_table_create, d_time_table_create, 
-d_week_table_create, d_year_table_create, pix_movements_table_create, state_table_create, transfer_ins_table_create, transfer_outs_table_create] #, user_table_create, song_table_create, artist_table_create, time_table_create]
+d_week_table_create,d_weekday_table_create, d_year_table_create, pix_movements_table_create, state_table_create, transfer_ins_table_create, transfer_outs_table_create] #, user_table_create, song_table_create, artist_table_create, time_table_create]
 drop_table_queries = [accounts_table_drop, city_table_drop , costumers_table_drop, country_table_drop, d_month_table_drop, d_time_table_drop,
 d_week_table_drop, d_weekday_table_drop, d_year_table_drop, pix_movements_table_drop, state_table_drop, transfer_ins_table_drop, transfer_outs_table_drop] #, user_table_drop, song_table_drop, artist_table_drop, time_table_drop]
