@@ -13,6 +13,7 @@ pix_movements_table_drop = "DROP TABLE IF EXISTS pix_movements_table;"
 state_table_drop = "DROP TABLE IF EXISTS state_table;"
 transfer_ins_table_drop = "DROP TABLE IF EXISTS transfer_ins_table;"
 transfer_outs_table_drop = "DROP TABLE IF EXISTS transfer_outs_table;"
+fact_movements_table_drop = "DROP TABLE IF EXISTS fact_movements_table;"
 
 # CREATE TABLES
 
@@ -134,8 +135,22 @@ transfer_outs_table_create = ("""CREATE TABLE IF NOT EXISTS transfer_outs_table
                         );"""
                     )
 
+fact_movements_table_create = ("""CREATE TABLE IF NOT EXISTS fact_movements_table
+                        (
+                            id                  bigint PRIMARY KEY,
+                            account_id          bigint,
+                            customer_id         bigint,
+                            in_or_out           varchar(128),
+                            type                varchar(128),
+                            amount              float,
+                            requested_at        varchar(256),
+                            completed_at        varchar(256),
+                            status              varchar(128)
+                        );"""
+                    )
 
-# INSERT RECORDS
+
+# INSERT
 
 accounts_table_insert = ("""INSERT INTO accounts_table
                             (
@@ -274,6 +289,21 @@ state_table_insert = ("""INSERT INTO state_table
                         VALUES (%s, %s, %s);"""
                     )
 
+fact_movements_table_insert = ("""INSERT INTO fact_movements_table
+                        (
+                            id,
+                            account_id,
+                            customer_id,
+                            in_or_out,
+                            type,
+                            amount,
+                            requested_at,
+                            completed_at,
+                            status
+                        )
+                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);"""
+                    )
+                     
                      
                     
 
@@ -289,7 +319,36 @@ song_select = ("""SELECT
 
 # QUERY LISTS
 
-create_table_queries = [accounts_table_create, city_table_create, customers_table_create,country_table_create, d_month_table_create, d_time_table_create, 
-d_week_table_create,d_weekday_table_create, d_year_table_create, pix_movements_table_create, state_table_create, transfer_ins_table_create, transfer_outs_table_create] #, user_table_create, song_table_create, artist_table_create, time_table_create]
-drop_table_queries = [accounts_table_drop, city_table_drop , customers_table_drop, country_table_drop, d_month_table_drop, d_time_table_drop,
-d_week_table_drop, d_weekday_table_drop, d_year_table_drop, pix_movements_table_drop, state_table_drop, transfer_ins_table_drop, transfer_outs_table_drop] #, user_table_drop, song_table_drop, artist_table_drop, time_table_drop]
+create_table_queries = [
+                            accounts_table_create,
+                            city_table_create,
+                            customers_table_create,
+                            country_table_create,
+                            d_month_table_create,
+                            d_time_table_create,
+                            d_week_table_create,
+                            d_weekday_table_create,
+                            d_year_table_create,
+                            pix_movements_table_create,
+                            state_table_create,
+                            transfer_ins_table_create,
+                            transfer_outs_table_create,
+                            fact_movements_table_create
+                        ]
+
+drop_table_queries = [
+                            accounts_table_drop,
+                            city_table_drop,
+                            customers_table_drop,
+                            country_table_drop,
+                            d_month_table_drop,
+                            d_time_table_drop,
+                            d_week_table_drop,
+                            d_weekday_table_drop,
+                            d_year_table_drop,
+                            pix_movements_table_drop,
+                            state_table_drop,
+                            transfer_ins_table_drop,
+                            transfer_outs_table_drop,
+                            fact_movements_table_drop
+                    ]
