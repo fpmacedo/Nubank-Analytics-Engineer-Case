@@ -2,7 +2,7 @@
 
 accounts_table_drop = "DROP TABLE IF EXISTS accounts_table;"
 city_table_drop = "DROP TABLE IF EXISTS city_table;"
-costumers_table_drop = "DROP TABLE IF EXISTS costumers_table;"
+customers_table_drop = "DROP TABLE IF EXISTS customers_table;"
 country_table_drop = "DROP TABLE IF EXISTS country_table;"
 d_month_table_drop = "DROP TABLE IF EXISTS d_month_table;"
 d_time_table_drop = "DROP TABLE IF EXISTS d_time_table;"
@@ -35,7 +35,7 @@ city_table_create = ("""CREATE TABLE IF NOT EXISTS city_table
                         );"""
                     )
 
-costumers_table_create = ("""CREATE TABLE IF NOT EXISTS costumers_table
+customers_table_create = ("""CREATE TABLE IF NOT EXISTS customers_table
                         (
                         customer_id      bigint PRIMARY KEY,
                         first_name       varchar(128),
@@ -134,6 +134,7 @@ transfer_outs_table_create = ("""CREATE TABLE IF NOT EXISTS transfer_outs_table
                         );"""
                     )
 
+
 # INSERT RECORDS
 
 accounts_table_insert = ("""INSERT INTO accounts_table
@@ -159,7 +160,7 @@ city_table_insert = ("""INSERT INTO city_table
                         VALUES (%s, %s, %s);"""
                     )
 
-costumers_table_insert = ("""INSERT INTO costumers_table
+customers_table_insert = ("""INSERT INTO customers_table
                         (
                         customer_id,
                         first_name,
@@ -288,7 +289,7 @@ song_select = ("""SELECT
 
 # QUERY LISTS
 
-create_table_queries = [accounts_table_create, city_table_create, costumers_table_create,country_table_create, d_month_table_create, d_time_table_create, 
+create_table_queries = [accounts_table_create, city_table_create, customers_table_create,country_table_create, d_month_table_create, d_time_table_create, 
 d_week_table_create,d_weekday_table_create, d_year_table_create, pix_movements_table_create, state_table_create, transfer_ins_table_create, transfer_outs_table_create] #, user_table_create, song_table_create, artist_table_create, time_table_create]
-drop_table_queries = [accounts_table_drop, city_table_drop , costumers_table_drop, country_table_drop, d_month_table_drop, d_time_table_drop,
+drop_table_queries = [accounts_table_drop, city_table_drop , customers_table_drop, country_table_drop, d_month_table_drop, d_time_table_drop,
 d_week_table_drop, d_weekday_table_drop, d_year_table_drop, pix_movements_table_drop, state_table_drop, transfer_ins_table_drop, transfer_outs_table_drop] #, user_table_drop, song_table_drop, artist_table_drop, time_table_drop]
