@@ -167,7 +167,7 @@ dim_customers_table_create = ("""CREATE TABLE IF NOT EXISTS dim_customers_table
                             customer_id      bigint PRIMARY KEY,
                             first_name       varchar(128),
                             last_name        varchar(128),
-                            city,            varchar(128),
+                            city             varchar(128),
                             state            varchar(128),
                             country          varchar(128),
                             cpf              bigint
