@@ -14,6 +14,8 @@ state_table_drop = "DROP TABLE IF EXISTS state_table;"
 transfer_ins_table_drop = "DROP TABLE IF EXISTS transfer_ins_table;"
 transfer_outs_table_drop = "DROP TABLE IF EXISTS transfer_outs_table;"
 fact_movements_table_drop = "DROP TABLE IF EXISTS fact_movements_table;"
+dim_time_table_drop = "DROP TABLE IF EXISTS dim_time_table;"
+dim_customers_table_drop = "DROP TABLE IF EXISTS dim_customers_table;"
 
 # CREATE TABLES
 
@@ -146,6 +148,30 @@ fact_movements_table_create = ("""CREATE TABLE IF NOT EXISTS fact_movements_tabl
                             requested_at        varchar(256),
                             completed_at        varchar(256),
                             status              varchar(128)
+                        );"""
+                    )
+
+dim_time_table_create = ("""CREATE TABLE IF NOT EXISTS dim_time_table
+                        (
+                            time_id             bigint PRIMARY KEY,
+                            action_timestamp    timestamp,
+                            action_week         int,
+                            action_month        int,
+                            action_year         int,
+                            action_weekday      int
+                        );"""
+                    )
+
+dim_customers_table_create = ("""CREATE TABLE IF NOT EXISTS dim_customers_table
+                        (
+                            customer_id      bigint PRIMARY KEY,
+                            first_name       varchar(128),
+                            last_name        varchar(128),
+                            city,            varchar(128),
+                            state            varchar(128),
+                            country          varchar(128),
+                            cpf              bigint
+                            
                         );"""
                     )
 
@@ -304,7 +330,31 @@ fact_movements_table_insert = ("""INSERT INTO fact_movements_table
                         VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);"""
                     )
                      
+dim_time_table_insert = ("""CREATE TABLE IF NOT EXISTS dim_time_table
+                        (
+                            time_id,
+                            action_timestamp,
+                            action_week,
+                            action_month,
+                            action_year,
+                            action_weekday
+                        )
+                        VALUES (%s, %s, %s, %s, %s, %s);"""
+                    )
                      
+dim_customers_table_insert = ("""INSERT INTO customers_table
+                        (
+                        customer_id,
+                        first_name,
+                        last_name,
+                        city,
+                        state,
+                        country,
+                        cpf
+                        )
+                        VALUES (%s, %s, %s, %s, %s, %s, %s)
+                        ON CONFLICT (customer_id) DO NOTHING;"""
+                    )
                     
 
 # FIND SONGS
@@ -333,7 +383,9 @@ create_table_queries = [
                             state_table_create,
                             transfer_ins_table_create,
                             transfer_outs_table_create,
-                            fact_movements_table_create
+                            fact_movements_table_create,
+                            dim_time_table_create,
+                            dim_customers_table_create
                         ]
 
 drop_table_queries = [
@@ -350,5 +402,7 @@ drop_table_queries = [
                             state_table_drop,
                             transfer_ins_table_drop,
                             transfer_outs_table_drop,
-                            fact_movements_table_drop
+                            fact_movements_table_drop,
+                            dim_time_table_drop,
+                            dim_customers_table_drop
                     ]
