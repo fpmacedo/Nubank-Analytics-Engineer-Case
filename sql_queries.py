@@ -176,7 +176,7 @@ dim_customers_table_create = ("""CREATE TABLE IF NOT EXISTS dim_customers_table
                     )
 
 
-# INSERT
+# INSERT TABLES
 
 accounts_table_insert = ("""INSERT INTO accounts_table
                             (
@@ -356,16 +356,6 @@ dim_customers_table_insert = ("""INSERT INTO customers_table
                         ON CONFLICT (customer_id) DO NOTHING;"""
                     )
                     
-
-# FIND SONGS
-
-song_select = ("""SELECT 
-                  song_table.song_id, artist_table.artist_id
-                  FROM 
-                  song_table JOIN artist_table ON (song_table.artist_id = artist_table.artist_id)
-                  WHERE 
-                  song_table.title = %s AND artist_table.name = %s AND song_table.duration = %s;"""
-              )
 
 # QUERY LISTS
 

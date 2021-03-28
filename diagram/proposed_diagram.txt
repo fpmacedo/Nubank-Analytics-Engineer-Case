@@ -1,0 +1,49 @@
+Table fact_movements as U {
+  id uuid [pk]
+  account_id uuid
+  customer_id uuid
+  in_or_out varchar(128)
+  type  varchar(128)
+  amount float
+  requested_at int
+  completed_at int
+  status varchar(128)
+}
+
+Table dim_customers as U {
+  customer_id uuid [pk]
+  first_name varchar(128)
+  last_name varchar(128)
+  city varchar(256)
+  state varchar(128)
+  country varchar(128)
+  cpf int
+}
+
+Table dim_accounts as U {
+  account_id uuid [pk]
+  customer_id uuid
+  created_at timestamp
+  status varchar(128)
+  account_branch varchar(128)
+  account_check_digit varchar(128)
+  account_number varchar(128)
+}
+
+Table dim_time as U {
+  time_id int [pk]
+  action_timestamp timestamp
+  action_week int
+  action_month int
+  action_year int
+  action_weekday varchar(128)
+}
+
+
+Ref: fact_movements.customer_id > dim_customers.customer_id
+Ref: fact_movements.account_id > dim_accounts.account_id
+
+Ref: fact_movements.requested_at > dim_time.time_id
+Ref: fact_movements.completed_at > dim_time.time_id
+
+Ref: dim_customers.customer_id - dim_accounts.customer_id
